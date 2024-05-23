@@ -1,0 +1,48 @@
+if _G.cons then
+	for L_14_forvar1, L_15_forvar2 in pairs(_G.cons) do
+		L_15_forvar2:Disconnect()
+	end
+	_G.cons = nil
+end
+local L_1_ = game:GetService("\x52\x75\x6E\x53\x65\x72\x76\x69\x63\x65")
+local L_2_ = L_1_.Heartbeat
+local L_3_ = L_1_.RenderStepped
+local L_4_ = game.Players.LocalPlayer
+local L_5_ = L_4_:GetMouse()
+local L_6_ = L_4_.Character
+local L_7_ = L_6_.Humanoid
+local L_8_ = L_7_.RootPart
+local L_9_ = false
+local L_10_ = {}
+for L_16_forvar1, L_17_forvar2 in pairs(L_6_:GetDescendants()) do
+	if L_17_forvar2:IsA("\x42\x61\x73\x65\x50\x61\x72\x74") and L_17_forvar2.Transparency == 0 then
+		L_10_[#L_10_ + 1] = L_17_forvar2
+	end
+end
+local function L_11_func()
+	for L_18_forvar1, L_19_forvar2 in pairs(L_10_) do
+		L_19_forvar2.Transparency = L_19_forvar2.Transparency == 0 and 0.5 or 0
+	end
+end
+local L_12_ = L_5_.KeyDown:Connect(function(L_20_arg1)
+	if L_20_arg1 == "\x67" then
+		L_9_ = not L_9_
+		L_11_func()
+	end
+end)
+local L_13_ = L_2_:Connect(function()
+	if L_9_ then
+		local L_21_ = L_8_.CFrame
+		local L_22_ = L_7_.CameraOffset
+		local L_23_ = L_21_ * CFrame.new(0, -15, 0)
+		L_7_.CameraOffset = L_23_:ToObjectSpace(CFrame.new(L_21_.Position)).Position
+		L_8_.CFrame = L_23_
+		L_3_:Wait()
+		L_7_.CameraOffset = L_22_
+		L_8_.CFrame = L_21_
+	end
+end)
+_G.cons = {
+	L_12_,
+	L_13_
+}
